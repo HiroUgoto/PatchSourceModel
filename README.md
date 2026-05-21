@@ -22,11 +22,14 @@ If you use this dataset or code in your research, please cite the following pape
 └── 01_model_selection.py     # Sample Script
 ```
 
-## 使い方
+## Usage
 
 1. 準備
 必要なライブラリをインストールします。
+
+```
 pip install -r requirements.txt
+```
 
 2. サンプルコード
 以下のように、patchsourcemodel をインポートしてデータセットを操作します。
@@ -49,7 +52,7 @@ model.export_mr_to_txt(output_dir="./output")
 model.export_slipr_to_txt(output_dir="./output")
 ```
 
-## ライセンス
+## License
 
 MIT License
 
