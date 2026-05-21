@@ -13,13 +13,14 @@ If you use this dataset or code in your research, please cite the following pape
 > **Hiroyuki Goto (2024)** Source scaling of simulated dynamic ruptures using hierarchical slip-weakening patch model, *Bulletin of the Seismological Society of America*, 114(2), 690--709. https://doi:10.1785/0120230174
 
 ## Folder Layout
-
+```
 .
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
 ├── patchsourcemodel.py       
 └── 01_model_selection.py     # Sample Script
+```
 
 ## 使い方
 
@@ -29,6 +30,8 @@ pip install -r requirements.txt
 
 2. サンプルコード
 以下のように、patchsourcemodel をインポートしてデータセットを操作します。
+
+```python
 import patchsourcemodel as psm
 
 # データセットの初期化（HDF5ファイルのパスを指定）
@@ -44,6 +47,7 @@ model.plot_model()
 # データのテキストエクスポート
 model.export_mr_to_txt(output_dir="./output")
 model.export_slipr_to_txt(output_dir="./output")
+```
 
 ## ライセンス
 
@@ -51,7 +55,6 @@ MIT License
 
 ## Author
 
-- **Hiroyuki Goto**
-  - Kyoto University
+**Hiroyuki Goto** (Kyoto University)
 
 
