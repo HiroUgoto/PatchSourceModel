@@ -4,8 +4,7 @@ Hierarchical Friction Patch Source Model -- Dataset Handler
     If you use this dataset or code in your research, please cite the following paper:
 
     Hiroyuki Goto (2024) Source scaling of simulated dynamic ruptures using hierarchical slip-weakening patch model, 
-    Bulletin of the Seismological Society of America*, 114(2), 690--709. https://doi:10.1785/0120230174
-
+    Bulletin of the Seismological Society of America*, 114(2), 690--709. https://doi.org/10.1785/0120230174
 """
 import h5py
 import os
