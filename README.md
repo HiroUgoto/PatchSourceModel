@@ -1,4 +1,4 @@
-# Hierarchical Friction Patch Earthquake Source Model -- Dataset Handler
+# Hierarchical Friction Patch Source Model - Dataset Handler
 
 A utility tool designed to efficiently manage, visualize, and export hierarchical friction-patch earthquake source models (including final slip distributions, patch configurations, and moment-rate functions) stored in HDF5 format.
 
@@ -10,7 +10,7 @@ If you use this dataset or code in your research, please cite the following pape
 
 本データセットまたはコードを研究・論文等で使用する場合は、以下の論文を参照（引用）してください。
 
-> **Hiroyuki Goto (2024)** Source scaling of simulated dynamic ruptures using hierarchical slip-weakening patch model, *Bulletin of the Seismological Society of America*, 114(2), 690--709. https://doi:10.1785/0120230174
+> **Hiroyuki Goto (2024)** Source scaling of simulated dynamic ruptures using hierarchical slip-weakening patch model, *Bulletin of the Seismological Society of America*, 114(2), 690-709. https://doi:10.1785/0120230174
 
 ## Folder Layout
 ```

@@ -1,5 +1,5 @@
 """
-Hierarchical Friction Patch Earthquake Source Model -- Dataset Handler
+Hierarchical Friction Patch Source Model -- Dataset Handler
 
     If you use this dataset or code in your research, please cite the following paper:
 
