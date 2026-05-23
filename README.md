@@ -1,5 +1,7 @@
 # Hierarchical Friction Patch Source Model - Dataset Handler
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20319772.svg)](https://doi.org/10.5281/zenodo.20319772)
+
 A utility tool designed to efficiently manage, visualize, and export hierarchical friction-patch earthquake source models (including final slip distributions, patch configurations, and moment-rate functions) stored in HDF5 format.
 
 HDF5形式にまとめられた階層型摩擦パッチ震源モデル（断層すべり分布、パッチ分布、モーメントレート関数）を効率的に管理・可視化・エクスポートするためのユーティリティツールです。
