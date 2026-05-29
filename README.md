@@ -1,10 +1,19 @@
 # Hierarchical Friction Patch Source Model - Dataset Handler
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20319772.svg)](https://doi.org/10.5281/zenodo.20319772)
 
 A utility tool designed to efficiently manage, visualize, and export hierarchical friction-patch earthquake source models (including final slip distributions, patch configurations, and moment-rate functions) stored in HDF5 format.
 
 HDF5形式にまとめられた階層型摩擦パッチ震源モデル（断層すべり分布、パッチ分布、モーメントレート関数）を効率的に管理・可視化・エクスポートするためのユーティリティツールです。
+
+## Dataset
+
+A dataset of hierarchical friction-patch earthquake source models (in HDF5 format) is available at the following Zenodo URL. 
+
+階層型摩擦パッチ震源モデルのデータセット（HDF5フォーマット）は，以下のとおりZenodoから入手することができます．
+
+Dataset of Hierarchical Friction-Patch Source Models 
+https://doi.org/10.5281/zenodo.20319772 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20319772.svg)](https://doi.org/10.5281/zenodo.20319772)
+
 
 ## Citation
 
@@ -46,7 +55,7 @@ dataset = psm.SourceModelDataset("hdf5/Model_fullspace_all_v01.h5")
 model = dataset.find_by_mw(target_mw=6.5)
 print(f"Found Event ID: {model.id}, Mw: {model.mw:.2f}")
 
-# 3パネルプロット（すべり・パッチ・モーメントレート）の表示
+# モデルをプロットして確認する
 model.plot_model()
 
 # データのテキストエクスポート
