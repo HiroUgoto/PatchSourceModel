@@ -11,8 +11,8 @@ A dataset of hierarchical friction-patch earthquake source models (in HDF5 forma
 
 階層型摩擦パッチ震源モデルのデータセット（HDF5フォーマット）は，以下のとおりZenodoから入手することができます．
 
-Dataset of Hierarchical Friction-Patch Source Models 
-https://doi.org/10.5281/zenodo.20319772 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20319772.svg)](https://doi.org/10.5281/zenodo.20319772)
+[Dataset of Hierarchical Friction-Patch Source Models](https://doi.org/10.5281/zenodo.20319772)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20319772.svg)](https://doi.org/10.5281/zenodo.20319772)
 
 
 ## Citation
