@@ -1,10 +1,8 @@
 """
 Hierarchical Friction Patch Source Model -- Dataset Handler
-
     If you use this dataset or code in your research, please cite the following paper:
-
-    Hiroyuki Goto (2024) Source scaling of simulated dynamic ruptures using hierarchical slip-weakening patch model, 
-    Bulletin of the Seismological Society of America*, 114(2), 690--709. https://doi.org/10.1785/0120230174
+        Hiroyuki Goto (2024) Source scaling of simulated dynamic ruptures using hierarchical slip-weakening patch model, 
+        Bulletin of the Seismological Society of America*, 114(2), 690--709. https://doi.org/10.1785/0120230174
 """
 import h5py
 import os
@@ -114,9 +112,17 @@ class SourceModel:
             original_shape = slipr.shape
             slipr_2d = slipr.reshape(-1, original_shape[2])  
             print(f"  Reshaped array from {original_shape} to {slipr_2d.shape}.")
-            
+
+            header_text = (
+                f"ID: {self.id}, Mw: {self.mw:.2f}\n"
+                f"Spatial grid spacing (dx): {self.dx} m\n"
+                f"Time step interval (dt): {self.dt} s\n"
+                f"Original 3D shape: {original_shape} (nx, ny, nt)\n"
+                f"Rows represent flattened spatial grid (nx * ny), columns represent time steps (nt)"
+            )
+
             # テキストファイルに出力
-            np.savetxt(output_file, slipr_2d, fmt='%.6e', delimiter=' ')
+            np.savetxt(output_file, slipr_2d, fmt='%.6e', delimiter=' ', header=header_text)
             print(f"Export completed: {output_file}") 
         else:
             print(f"  [Warning] Expected 3D array for slip-rate, but got {slipr.ndim}D.")
@@ -131,7 +137,12 @@ class SourceModel:
         
         print(f"Exporting moment-rate for ID: {self.id} ...")
         
-        np.savetxt(output_file, self.mr, fmt='%.6e', delimiter=' ')
+        header_text = (
+            f"ID: {self.id}, Mw: {self.mw:.2f}\n"
+            f"Time step interval (dt): {self.dt} s"
+        )
+
+        np.savetxt(output_file, self.mr, fmt='%.6e', delimiter=' ', header=header_text)
         print(f"Export completed: {output_file}") 
 
 # ------------------------------------------------------------------------------------
@@ -141,6 +152,15 @@ class SourceModelDataset:
         self.filepath = filepath
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"HDF5 file not found: {filepath}")
+
+        self.mw_dict = {} 
+        with h5py.File(self.filepath, 'r') as f:
+            for group_name in f.keys():
+                grp = f[group_name]
+                if 'mw' in grp.attrs:
+                    mw_val = grp.attrs['mw']
+                    if not np.isnan(mw_val):
+                        self.mw_dict[group_name] = mw_val
 
     def get_source_model(self, source_id):
         """指定したIDのソースモデルを読み込んで SourceModel オブジェクトを返す"""
@@ -159,32 +179,34 @@ class SourceModelDataset:
 
     def find_by_mw(self, target_mw):
         """最も指定したMwに近いソースモデルを検索して返す"""
+        if not self.mw_dict:
+            raise ValueError("Dataset index is empty.")
+
         closest_id = None
         min_diff = float('inf')
         
-        with h5py.File(self.filepath, 'r') as f:
-            for group_name in f.keys():
-                grp = f[group_name]
-                if 'mw' in grp.attrs:
-                    mw_val = grp.attrs['mw']
-                    if not np.isnan(mw_val):
-                        diff = abs(mw_val - target_mw)
-                        if diff < min_diff:
-                            min_diff = diff
-                            closest_id = group_name
+        for group_name, mw_val in self.mw_dict.items():
+            diff = abs(mw_val - target_mw)
+            if diff < min_diff:
+                min_diff = diff
+                closest_id = group_name
                             
         return self.get_source_model(closest_id)
     
+    def get_id_by_mw_range(self, min_mw, max_mw):
+        """
+        指定したMwの範囲に含まれるIDのリストを返すメソッド。
+        """
+        matched_id = [
+            gid for gid, mw in self.mw_dict.items()
+            if min_mw <= mw <= max_mw
+        ]
+        matched_id.sort() 
+        return matched_id
+
     def extract_mw_list(self, output_file=None, plot=True):
         """全イベントのMwリストを抽出して返す"""
-        mw_list = []
-        with h5py.File(self.filepath, 'r') as f:
-            for group_name in f.keys():
-                grp = f[group_name]
-                if 'mw' in grp.attrs:
-                    mw_val = grp.attrs['mw']
-                    if not np.isnan(mw_val):
-                        mw_list.append((group_name, mw_val))
+        mw_list = sorted(list(self.mw_dict.items()))
 
         if output_file is not None:
             with open(output_file, 'w') as out_f:
@@ -194,7 +216,8 @@ class SourceModelDataset:
         if plot:
             bins,w = np.linspace(4,8,20,retstep=True)
             mw_centers = np.convolve(bins,np.array([0.5,0.5]),"valid")
-            mw_hist,_ = np.histogram(mw_list,bins)
+            mws_only = [m[1] for m in mw_list]
+            mw_hist, _ = np.histogram(mws_only, bins)
             nz_ind = np.nonzero(mw_hist)
 
             fig,ax1 = plt.subplots(figsize=(6,6))
@@ -211,3 +234,4 @@ class SourceModelDataset:
             plt.show()
 
         return mw_list
+    
