@@ -153,7 +153,15 @@ class SourceModelDataset:
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"HDF5 file not found: {filepath}")
 
-        self.mw_dict = {} 
+        self.mw_dict = None 
+
+    def _check_mw_index(self):
+        if self.mw_dict is not None:
+            return  
+
+        self.mw_dict = {}
+        print(f"Indexing Mw values from HDF5 dataset... (this may take a few seconds)")
+        
         with h5py.File(self.filepath, 'r') as f:
             for group_name in f.keys():
                 grp = f[group_name]
@@ -179,6 +187,8 @@ class SourceModelDataset:
 
     def find_by_mw(self, target_mw):
         """最も指定したMwに近いソースモデルを検索して返す"""
+        self._check_mw_index()
+
         if not self.mw_dict:
             raise ValueError("Dataset index is empty.")
 
@@ -197,6 +207,8 @@ class SourceModelDataset:
         """
         指定したMwの範囲に含まれるIDのリストを返すメソッド。
         """
+        self._check_mw_index()
+
         matched_id = [
             gid for gid, mw in self.mw_dict.items()
             if min_mw <= mw <= max_mw
@@ -206,6 +218,7 @@ class SourceModelDataset:
 
     def extract_mw_list(self, output_file=None, plot=True):
         """全イベントのMwリストを抽出して返す"""
+        self._check_mw_index()
         mw_list = sorted(list(self.mw_dict.items()))
 
         if output_file is not None:
